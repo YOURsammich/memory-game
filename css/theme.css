@@ -1,8 +1,67 @@
 html,
-body {
+body,
+main {
     height: 100%;
 }
 
 body {
     margin: 0px;
+}
+
+main {
+    background-color: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    padding: 5px;
+}
+
+header #tool-bar {
+    margin-left: auto;
+}
+
+#deck {
+    background-color: #222;
+    list-style-type: none;
+    width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 9px 3px 12px 0px black;
+    border-radius: 5px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.card {
+    border-radius: 10px;
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    margin: 15px;
+    background-color: #c83804;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 2px 1px 6px black;
+    transition: transform .6s, box-shadow .6s;
+}
+
+/*.card:hover {
+    transform: rotateY(180deg);
+    box-shadow: -2px 1px 6px black;
+}*/
+
+.flip {
+    transform: rotateY(180deg);
+    box-shadow: -2px 1px 6px black !important;
+}
+
+.card:active {
+    background-color: #39f;
 }
