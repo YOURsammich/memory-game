@@ -1,24 +1,19 @@
-html,
-body,
-main {
-    height: 100%;
-}
-
 body {
     margin: 0px;
+    background-color: #222;
 }
 
 main {
-    background-color: #111;
     color: white;
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: 'Oxygen', sans-serif;
+    margin-bottom: 50px;
 }
 
 header {
     display: flex;
-    padding: 5px;
 }
 
 header #tool-bar {
@@ -26,16 +21,41 @@ header #tool-bar {
 }
 
 #deck {
-    background-color: #222;
+    background-color: #333;
+    border: 3px solid #111;
+    box-shadow: rgba(0, 0, 0, 0.8) 2px 1px 7px 0px, rgba(0, 0, 0, 0.8) 2px 1px 7px 0px inset;
     list-style-type: none;
     width: 600px;
     display: flex;
     flex-wrap: wrap;
-    box-shadow: 9px 3px 12px 0px black;
     border-radius: 5px;
     padding: 0px;
     margin: 0px;
 }
+
+@keyframes non-match {
+    from{
+        font-size: 0px;
+        transform: rotateY(0deg);
+        background: linear-gradient(to right, #7c241b, #c0392b);
+    }
+    to{}
+}
+
+@keyframes unflip {
+    from{
+        background: linear-gradient(to right, #2060a0, #39f);
+    }
+    to{}
+}
+
+@keyframes flip {
+    from{
+        background: linear-gradient(to right, #7c2302, #c83804);
+    }
+    to{}
+}
+
 
 .card {
     border-radius: 10px;
@@ -49,19 +69,37 @@ header #tool-bar {
     justify-content: center;
     flex-direction: column;
     box-shadow: 2px 1px 6px black;
-    transition: transform .6s, box-shadow .6s;
+    animation: unflip .6s;
+    font-size: 0px;
+    transition: transform .6s, font-size, box-shadow;
+    transition-delay: 0s, 0s, .2s;
 }
 
-/*.card:hover {
+.card i {
+    pointer-events: none;
     transform: rotateY(180deg);
+}
+
+.match {
     box-shadow: -2px 1px 6px black;
-}*/
+    cursor: default;
+    transform: rotateY(180deg);
+    font-size: 16px;
+    background-color: #27ae60 !important;
+    animation: none;
+}
 
 .flip {
+    background-color: #39f;
+    box-shadow: -2px 1px 6px black;
+    animation: flip .6s;
     transform: rotateY(180deg);
-    box-shadow: -2px 1px 6px black !important;
+    font-size: 16px;
+    transition: transform .6s, font-size, box-shadow;
+    transition-delay: 0s, .2s, .2s;
 }
 
-.card:active {
-    background-color: #39f;
+.not-match {
+    animation: non-match .6s !important;
+    animation-delay: .6s !important;
 }

@@ -1,4 +1,8 @@
-const gameObject = {};
+var gameObject = {
+    deck : [],
+    firstCard : null,
+    secondCard : null
+};
 
 function generateDeck () {
     let deck = [];
@@ -9,8 +13,7 @@ function generateDeck () {
     while (possible.length) {
         const randomIndex = Math.floor(Math.random() * possible.length);
         deck.push({
-            symbol : possible[randomIndex],
-            matched : false
+            symbol : possible[randomIndex]
         });
         possible.splice(randomIndex, 1);
     }
@@ -30,15 +33,49 @@ function getNodeIndex (node) {
 }
 
 function startGame () {
+    const allCards = document.getElementsByClassName('card');
+        
     gameObject.deck = generateDeck();
+    for (let card of allCards) {
+        card.getElementsByTagName('i')[0].textContent = gameObject.deck[getNodeIndex(card)].symbol;
+        card.classList = 'card';
+    }
 }
+
+startGame();
 
 document.getElementById('deck').addEventListener('click', function (e) {
     const target = e.target;
-    
-    if (target.nodeName === 'LI') {
-        const cardInfo = deck[getNodeIndex(target)];
-        console.log(cardInfo);
+    if (target.nodeName === 'LI' && !target.classList.contains('match')) {
+        const flippedCards = document.getElementsByClassName('flip');
+        
+        if (flippedCards.length === 2) {
+            while (flippedCards.length) {
+                flippedCards[0].classList = 'card';
+            }
+        }
+        
+        target.classList.add('flip');
+        
+        if (flippedCards.length === 2) {
+            const firstCard = flippedCards[0];
+            const secondCard = flippedCards[1]
+            const firstCardData = gameObject.deck[getNodeIndex(flippedCards[0])];
+            const secondCardData = gameObject.deck[getNodeIndex(flippedCards[1])];
+            
+            if (firstCardData.symbol === secondCardData.symbol) {
+                firstCard.classList.add('match');
+                secondCard.classList.add('match');
+            } else {
+                firstCard.className = 'card flip not-match';
+                secondCard.className = 'card flip not-match';
+                setTimeout(function () {
+                    firstCard.className = 'card';
+                    secondCard.className = 'card';
+                }, 10000);
+            }
+        }
     }
 });
 
+document.getElementById('new-game').addEventListener('click', startGame);
