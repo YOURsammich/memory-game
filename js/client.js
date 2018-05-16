@@ -1,4 +1,5 @@
 var gameDeck = [];
+var flipOrder = [];
 
 function generateDeck () {
     let deck = [];
@@ -28,38 +29,77 @@ function getNodeIndex (node) {
 
 function startGame () {
     const allCards = document.getElementsByClassName('card');
-        
+    
     gameDeck = generateDeck();
+    flipOrder = [];
     for (let card of allCards) {
         card.getElementsByTagName('i')[0].className = gameDeck[getNodeIndex(card)];
-        card.classList = 'card';
+        card.className = 'card';
     }
 }
 
 startGame();
+document.getElementById('new-game').addEventListener('click', startGame);
+
+function checkCards (firstCard, secondCard) {
+    const firstCardSymbol = gameDeck[getNodeIndex(firstCard)];
+    const secondCardSymbol = gameDeck[getNodeIndex(secondCard)];
+    
+    if (firstCardSymbol === secondCardSymbol) {
+        firstCard.classList.add('match');
+        secondCard.classList.add('match');
+    } else {
+        firstCard.classList.add('non-match');
+        secondCard.classList.add('non-match');
+    }
+    
+    setTimeout(function () {
+        firstCard.classList.remove('flip');
+        secondCard.classList.remove('flip');
+    }, 600);
+}
+
+function fakeClick (cards) {console.log(cards);
+    const flippedCards = document.getElementsByClassName('flip');
+    const card = cards[0];
+    const cardEl = document.getElementsByClassName('card')[card];
+    cardEl.classList.add('flip');
+    flipOrder.push(cardEl);
+    for (let i = 2; i <= flipOrder.length; i += 2) {
+        if (flipOrder[i - 2]) {
+            
+        }
+        checkCards(flipOrder[i - 2], flipOrder[i - 1]);
+        flipOrder = flipOrder.slice(2);
+    }
+    
+    setTimeout(function () {
+        var randomNum = Math.floor(Math.random() * 16);
+        fakeClick([randomNum])
+    }, 50)
+}
+
+setTimeout(function () {
+    //fakeClick([2]);
+}, 50);
 
 document.getElementById('deck').addEventListener('click', function (e) {
     const target = e.target;
     if (target.nodeName === 'LI' && !target.classList.contains('match')) {
-        const flippedCards = document.getElementsByClassName('flip');
-        
-        target.classList.add('flip');
-        
-        if (flippedCards.length >= 2) {
-            const firstCard = flippedCards[0];
-            const secondCard = flippedCards[1]
-            const firstCardSymbol = gameDeck[getNodeIndex(firstCard)];
-            const secondCardSymbol = gameDeck[getNodeIndex(secondCard)];
+        const flipOrderIndex = flipOrder.indexOf(target);
+        if (flipOrderIndex !== -1) {//card already in flipOrder
+            flipOrder.splice(flipOrderIndex, 1);
+            target.classList.remove('flip');
+        } else {
+            target.classList.add('flip');
+            flipOrder.push(target);
 
-            if (firstCardSymbol === secondCardSymbol) {
-                firstCard.classList.add('match');
-                secondCard.classList.add('match');
-            }
-            
-            setTimeout(function () {
-                firstCard.classList.remove('flip');
-                secondCard.classList.remove('flip');
-            }, 600);
+            // I use a "flipOrder" array because if the user clicks on the cards
+            // quickly it could cause some cards to get stuck on "flip"
+            for (let i = 2; i <= flipOrder.length; i += 2) {
+                checkCards(flipOrder[i - 2], flipOrder[i - 1]);
+                flipOrder = flipOrder.slice(2);
+            }   
         }
     }
 });
@@ -67,12 +107,8 @@ document.getElementById('deck').addEventListener('click', function (e) {
 document.body.addEventListener('animationend', function (e) {
     const animationName = e.animationName;
     const target = e.target;
-    console.log(animationName);
+
     if (animationName === 'non-match') {
         target.classList.remove('non-match');
-    } else if (animationName === 'flip') {
-        target.classList.add('not-match');
     }
 });
-
-document.getElementById('new-game').addEventListener('click', startGame);
