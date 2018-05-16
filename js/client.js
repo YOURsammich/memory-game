@@ -107,7 +107,7 @@ document.getElementById('deck').addEventListener('click', function (e) {
 document.body.addEventListener('animationend', function (e) {
     const animationName = e.animationName;
     const target = e.target;
-
+    //Don't remove "non-match" class until the animation is over
     if (animationName === 'non-match') {
         target.classList.remove('non-match');
     }

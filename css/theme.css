@@ -1,3 +1,9 @@
+html,
+body,
+main {
+    height: 100%;
+}
+
 body {
     margin: 0px;
     background-color: #222;
@@ -85,4 +91,27 @@ header #tool-bar {
 .non-match {
     animation: non-match .6s;
     animation-delay: .6s;
+}
+
+@media screen and (max-width: 600px) {
+    #game-wrap {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    #deck {
+        width: 100%;
+        border: none;
+        border-radius: 0px;
+        box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 7px 0px inset;
+        flex: 1;
+    }
+    
+    .card {
+        width: 21%;
+        margin: 2%;
+        height: 90px;
+    }
 }
