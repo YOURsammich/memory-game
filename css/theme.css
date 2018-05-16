@@ -34,28 +34,12 @@ header #tool-bar {
 }
 
 @keyframes non-match {
-    from{
-        font-size: 0px;
-        transform: rotateY(0deg);
-        background: linear-gradient(to right, #7c241b, #c0392b);
-    }
-    to{}
-}
-
-@keyframes unflip {
-    from{
-        background: linear-gradient(to right, #2060a0, #39f);
-    }
-    to{}
+    from { background: linear-gradient(to right, #7c241b, #c0392b); }
 }
 
 @keyframes flip {
-    from{
-        background: linear-gradient(to right, #7c2302, #c83804);
-    }
-    to{}
+    from { background: linear-gradient(to right, #7c2302, #c83804); }
 }
-
 
 .card {
     border-radius: 10px;
@@ -69,7 +53,6 @@ header #tool-bar {
     justify-content: center;
     flex-direction: column;
     box-shadow: 2px 1px 6px black;
-    animation: unflip .6s;
     font-size: 0px;
     transition: transform .6s, font-size, box-shadow;
     transition-delay: 0s, 0s, .2s;
@@ -84,7 +67,7 @@ header #tool-bar {
     box-shadow: -2px 1px 6px black;
     cursor: default;
     transform: rotateY(180deg);
-    font-size: 16px;
+    font-size: 30px;
     background-color: #27ae60 !important;
     animation: none;
 }
@@ -94,12 +77,12 @@ header #tool-bar {
     box-shadow: -2px 1px 6px black;
     animation: flip .6s;
     transform: rotateY(180deg);
-    font-size: 16px;
+    font-size: 30px;
     transition: transform .6s, font-size, box-shadow;
     transition-delay: 0s, .2s, .2s;
 }
 
-.not-match {
-    animation: non-match .6s !important;
-    animation-delay: .6s !important;
+.non-match {
+    animation: non-match .6s;
+    animation-delay: .6s;
 }
