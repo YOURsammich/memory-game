@@ -19,6 +19,15 @@
                 <header>
                     <h1>Matching game</h1>
                     <div id="tool-bar">
+                        <div>
+                            <ul id="star-rating">
+                                <li class="fa fa-star"></li>
+                                <li class="fa fa-star"></li>
+                                <li class="fa fa-star"></li>
+                            </ul>
+                            <span id="move-count">0</span> Moves
+                        </div>
+                        <span>Time: <span id="timer">0:00</span></span>
                         <button id="new-game">New Game</button>
                     </div>
                 </header>
@@ -73,8 +82,10 @@
                         <i></i>
                     </li>
                 </ul>
-                
-            </div>            
+            </div>
+            <div id="win-panel">
+                <button>Play again</button>
+            </div>
         </main>
         
         <script src="js/client.js"></script>

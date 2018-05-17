@@ -1,5 +1,10 @@
-var gameDeck = [];
-var flipOrder = [];
+const gameObject ={
+    deck : [],
+    flipOrder : [],
+    moveCounter : 0,
+    timeInt : null,
+    time : 0
+}
 
 function generateDeck () {
     let deck = [];
@@ -27,23 +32,72 @@ function getNodeIndex (node) {
     return -1;
 }
 
+function updateCounter (reset) {
+    const stars = document.getElementById('star-rating').children;
+    document.getElementById('move-count').textContent = reset ? gameObject.moveCounter = 0 : ++gameObject.moveCounter;
+    let moveCounter = gameObject.moveCounter;
+    
+    if (moveCounter === 45) {
+        stars[0].className = 'fa';
+    } else if (moveCounter === 40) {
+        stars[0].className = 'fas fa-star-half';
+    } else if (moveCounter === 35) {
+        stars[1].className = 'fa';
+    } else if (moveCounter === 30) {
+        stars[1].className = 'fas fa-star-half';
+    } else if (moveCounter === 25) {
+        stars[2].className = 'fa';
+    } else if (moveCounter === 20) {
+        stars[2].className = 'fas fa-star-half';
+    }
+}
+
+function checkWin () {
+    const allCards = document.getElementsByClassName('card');
+    let won = true;
+    for (let card of allCards) {
+        if (!card.classList.contains('match')) {
+            won = false;
+        }
+    }
+    
+    return won;
+}
+
 function startGame () {
     const allCards = document.getElementsByClassName('card');
+    const stars = document.getElementById('star-rating').children;
     
-    gameDeck = generateDeck();
-    flipOrder = [];
+    stars[0].className = stars[1].className = stars[2].className = 'fa fa-star';
+    gameObject.deck = generateDeck();
+    gameObject.flipOrder = [];
+    gameObject.time = 0;
+    updateCounter(true);
     for (let card of allCards) {
-        card.getElementsByTagName('i')[0].className = gameDeck[getNodeIndex(card)];
+        card.getElementsByTagName('i')[0].className = gameObject.deck[getNodeIndex(card)];
         card.className = 'card';
     }
+    
+    if (gameObject.timeInt) clearInterval(gameObject.timeInt);
+    
+    gameObject.timeInt = setInterval(function () {
+        let minute = Math.floor(gameObject.time / 60);
+        let seconds = gameObject.time % 60;
+        
+        if (seconds < 10) seconds = '0' + seconds;
+        
+        ++gameObject.time
+        
+        document.getElementById('timer').textContent = minute  + ':' + seconds;
+    }, 1000);
 }
 
 startGame();
 document.getElementById('new-game').addEventListener('click', startGame);
 
 function checkCards (firstCard, secondCard) {
-    const firstCardSymbol = gameDeck[getNodeIndex(firstCard)];
-    const secondCardSymbol = gameDeck[getNodeIndex(secondCard)];
+    const firstCardSymbol = gameObject.deck[getNodeIndex(firstCard)];
+    const secondCardSymbol = gameObject.deck[getNodeIndex(secondCard)];
     
     if (firstCardSymbol === secondCardSymbol) {
         firstCard.classList.add('match');
@@ -57,48 +111,29 @@ function checkCards (firstCard, secondCard) {
         firstCard.classList.remove('flip');
         secondCard.classList.remove('flip');
     }, 600);
-}
-
-function fakeClick (cards) {console.log(cards);
-    const flippedCards = document.getElementsByClassName('flip');
-    const card = cards[0];
-    const cardEl = document.getElementsByClassName('card')[card];
-    cardEl.classList.add('flip');
-    flipOrder.push(cardEl);
-    for (let i = 2; i <= flipOrder.length; i += 2) {
-        if (flipOrder[i - 2]) {
-            
-        }
-        checkCards(flipOrder[i - 2], flipOrder[i - 1]);
-        flipOrder = flipOrder.slice(2);
-    }
+    updateCounter();
     
-    setTimeout(function () {
-        var randomNum = Math.floor(Math.random() * 16);
-        fakeClick([randomNum])
-    }, 50)
+    if (checkWin()) {
+        clearInterval(gameObject.timeInt);    
+    }
 }
-
-setTimeout(function () {
-    //fakeClick([2]);
-}, 50);
 
 document.getElementById('deck').addEventListener('click', function (e) {
     const target = e.target;
-    if (target.nodeName === 'LI' && !target.classList.contains('match')) {
-        const flipOrderIndex = flipOrder.indexOf(target);
+    if (target.nodeName === 'LI' && !target.classList.contains('match') && !target.classList.contains('non-match')) {
+        const flipOrderIndex = gameObject.flipOrder.indexOf(target);
         if (flipOrderIndex !== -1) {//card already in flipOrder
-            flipOrder.splice(flipOrderIndex, 1);
+            gameObject.flipOrder.splice(flipOrderIndex, 1);
             target.classList.remove('flip');
         } else {
             target.classList.add('flip');
-            flipOrder.push(target);
+            gameObject.flipOrder.push(target);
 
             // I use a "flipOrder" array because if the user clicks on the cards
-            // quickly it could cause some cards to get stuck on "flip"
-            for (let i = 2; i <= flipOrder.length; i += 2) {
-                checkCards(flipOrder[i - 2], flipOrder[i - 1]);
-                flipOrder = flipOrder.slice(2);
+            // quickly it could gameObject.flipOrder some cards to get stuck on "flip"
+            for (let i = 2; i <= gameObject.flipOrder.length; i += 2) {
+                checkCards(gameObject.flipOrder[i - 2], gameObject.flipOrder[i - 1]);
+                gameObject.flipOrder = gameObject.flipOrder.slice(2);
             }   
         }
     }
