@@ -9,6 +9,10 @@ body {
     background-color: #222;
 }
 
+ul {
+    padding: 0px;
+}
+
 main {
     color: white;
     display: flex;
@@ -21,7 +25,6 @@ main {
 #star-rating {
     display: inline;
     margin: 0px;
-    padding: 0px;
 }
 
 header h1 {
@@ -50,14 +53,21 @@ header #tool-bar {
     position: fixed;
     top: 0px;
     left: 0px;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, .9);
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-size: 40px;
 }
 
 #win-panel button {
-    margin: auto;
+    border: none;
+    background-color: #27ae60;
+    color: white;
+    cursor: pointer;
+    width: 60%;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 #deck {

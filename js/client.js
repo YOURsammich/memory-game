@@ -61,23 +61,13 @@ function checkWin () {
         }
     }
     
-    return won;
+    if (won) {
+        clearInterval(gameObject.timeInt);
+        document.getElementById('win-panel').style.display = 'flex';
+    }
 }
 
-function startGame () {
-    const allCards = document.getElementsByClassName('card');
-    const stars = document.getElementById('star-rating').children;
-    
-    stars[0].className = stars[1].className = stars[2].className = 'fa fa-star';
-    gameObject.deck = generateDeck();
-    gameObject.flipOrder = [];
-    gameObject.time = 0;
-    updateCounter(true);
-    for (let card of allCards) {
-        card.getElementsByTagName('i')[0].className = gameObject.deck[getNodeIndex(card)];
-        card.className = 'card';
-    }
-    
+function startTimer () {
     if (gameObject.timeInt) clearInterval(gameObject.timeInt);
     
     gameObject.timeInt = setInterval(function () {
@@ -92,8 +82,27 @@ function startGame () {
     }, 1000);
 }
 
+function startGame () {
+    const allCards = document.getElementsByClassName('card');
+    const stars = document.getElementById('star-rating').children;
+    
+    stars[0].className = stars[1].className = stars[2].className = 'fa fa-star';
+    
+    gameObject.deck = generateDeck();
+    gameObject.flipOrder = [];
+    updateCounter(true);
+    for (let card of allCards) {
+        card.getElementsByTagName('i')[0].className = gameObject.deck[getNodeIndex(card)];
+        card.className = 'card';
+    }
+    
+    document.getElementById('win-panel').style.display = 'none';
+    startTimer();
+}
+
 startGame();
 document.getElementById('new-game').addEventListener('click', startGame);
+document.getElementById('play-again').addEventListener('click', startGame);
 
 function checkCards (firstCard, secondCard) {
     const firstCardSymbol = gameObject.deck[getNodeIndex(firstCard)];
@@ -112,29 +121,16 @@ function checkCards (firstCard, secondCard) {
         secondCard.classList.remove('flip');
     }, 600);
     updateCounter();
-    
-    if (checkWin()) {
-        clearInterval(gameObject.timeInt);    
-    }
+    checkWin();
 }
 
 document.getElementById('deck').addEventListener('click', function (e) {
     const target = e.target;
     if (target.nodeName === 'LI' && !target.classList.contains('match') && !target.classList.contains('non-match')) {
         const flipOrderIndex = gameObject.flipOrder.indexOf(target);
-        if (flipOrderIndex !== -1) {//card already in flipOrder
-            gameObject.flipOrder.splice(flipOrderIndex, 1);
-            target.classList.remove('flip');
-        } else {
+        if (flipOrderIndex === -1) {
             target.classList.add('flip');
-            gameObject.flipOrder.push(target);
-
-            // I use a "flipOrder" array because if the user clicks on the cards
-            // quickly it could gameObject.flipOrder some cards to get stuck on "flip"
-            for (let i = 2; i <= gameObject.flipOrder.length; i += 2) {
-                checkCards(gameObject.flipOrder[i - 2], gameObject.flipOrder[i - 1]);
-                gameObject.flipOrder = gameObject.flipOrder.slice(2);
-            }   
+            gameObject.flipOrder.push(target); 
         }
     }
 });
@@ -145,5 +141,12 @@ document.body.addEventListener('animationend', function (e) {
     //Don't remove "non-match" class until the animation is over
     if (animationName === 'non-match') {
         target.classList.remove('non-match');
+    } else if (animationName === 'flip') {
+        // I use a "flipOrder" array because if the user clicks on the cards
+        // quickly it could cause some cards to get stuck on "flip"
+        for (let i = 2; i <= gameObject.flipOrder.length; i += 2) {
+            checkCards(gameObject.flipOrder[i - 2], gameObject.flipOrder[i - 1]);
+            gameObject.flipOrder = gameObject.flipOrder.slice(2);
+        }  
     }
 });
