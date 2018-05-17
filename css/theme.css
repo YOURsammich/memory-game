@@ -32,12 +32,16 @@ header #tool-bar {
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
-    padding-left: 40px;
-    padding-right: 40px;
+}
+
+#tool-bar span {
+    padding: 13px 0px;
+    flex: 1;
+    text-align: center;
 }
 
 #new-game {
-    float: right;
+    cursor: pointer;
 }
 
 #win-panel {
@@ -52,7 +56,7 @@ header #tool-bar {
     flex-direction: column;
 }
 
-#win-panel div {
+#win-panel button {
     margin: auto;
 }
 

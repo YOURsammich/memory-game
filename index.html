@@ -19,16 +19,16 @@
                 <header>
                     <h1>Matching game</h1>
                     <div id="tool-bar">
-                        <div>
+                        <span>
                             <ul id="star-rating">
                                 <li class="fa fa-star"></li>
                                 <li class="fa fa-star"></li>
                                 <li class="fa fa-star"></li>
                             </ul>
                             <span id="move-count">0</span> Moves
-                        </div>
+                        </span>
                         <span>Time: <span id="timer">0:00</span></span>
-                        <button id="new-game">New Game</button>
+                        <span id="reset"><i id="new-game" class="fas fa-redo-alt"></i></span>
                     </div>
                 </header>
                 
@@ -83,7 +83,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="win-panel">
+            <div style="display: none;" id="win-panel">
                 <button>Play again</button>
             </div>
         </main>
