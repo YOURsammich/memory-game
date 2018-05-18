@@ -43,7 +43,7 @@ header #tool-bar {
     text-align: center;
 }
 
-#new-game {
+#reset {
     cursor: pointer;
 }
 
@@ -58,6 +58,20 @@ header #tool-bar {
     align-items: center;
     flex-direction: column;
     font-size: 40px;
+}
+
+#win-panel h1 {
+    margin: .5em;
+}
+
+#final-moves {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+#final-time {
+    font-size: 1em;
+    margin: 0px;
 }
 
 #win-panel button {

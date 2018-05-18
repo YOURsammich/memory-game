@@ -32,10 +32,27 @@ function getNodeIndex (node) {
     return -1;
 }
 
-function updateCounter (reset) {
+function startTimer () {
+    if (gameObject.timeInt) clearInterval(gameObject.timeInt);
+    
+    gameObject.time = 0;
+    gameObject.timeInt = setInterval(function () {
+        let minute = Math.floor(gameObject.time / 60);
+        let seconds = gameObject.time % 60;
+        
+        if (seconds < 10) seconds = '0' + seconds;
+        
+        ++gameObject.time
+        
+        document.getElementById('timer').textContent = minute  + ':' + seconds;
+    }, 1000);
+    document.getElementById('timer').textContent = '0:00';
+}
+
+function updateCounter () {
     const stars = document.getElementById('star-rating').children;
-    document.getElementById('move-count').textContent = reset ? gameObject.moveCounter = 0 : ++gameObject.moveCounter;
-    let moveCounter = gameObject.moveCounter;
+    const moveCounter = gameObject.moveCounter++;
+    document.getElementById('move-count').textContent = moveCounter;
     
     if (moveCounter === 45) {
         stars[0].className = 'fa';
@@ -64,33 +81,22 @@ function checkWin () {
     if (won) {
         clearInterval(gameObject.timeInt);
         document.getElementById('win-panel').style.display = 'flex';
+        document.getElementById('final-time').textContent = document.getElementById('timer').textContent;
+        document.getElementById('final-star-rating').innerHTML = document.getElementById('star-rating').innerHTML;
+        document.getElementById('final-moves').textContent = document.getElementById('move-count').textContent + ' moves';
     }
-}
-
-function startTimer () {
-    if (gameObject.timeInt) clearInterval(gameObject.timeInt);
-    
-    gameObject.timeInt = setInterval(function () {
-        let minute = Math.floor(gameObject.time / 60);
-        let seconds = gameObject.time % 60;
-        
-        if (seconds < 10) seconds = '0' + seconds;
-        
-        ++gameObject.time
-        
-        document.getElementById('timer').textContent = minute  + ':' + seconds;
-    }, 1000);
 }
 
 function startGame () {
     const allCards = document.getElementsByClassName('card');
     const stars = document.getElementById('star-rating').children;
     
+    //reset everything
     stars[0].className = stars[1].className = stars[2].className = 'fa fa-star';
-    
     gameObject.deck = generateDeck();
     gameObject.flipOrder = [];
-    updateCounter(true);
+    gameObject.moveCounter = 0;
+    updateCounter();
     for (let card of allCards) {
         card.getElementsByTagName('i')[0].className = gameObject.deck[getNodeIndex(card)];
         card.className = 'card';
@@ -101,7 +107,7 @@ function startGame () {
 }
 
 startGame();
-document.getElementById('new-game').addEventListener('click', startGame);
+document.getElementById('reset').addEventListener('click', startGame);
 document.getElementById('play-again').addEventListener('click', startGame);
 
 function checkCards (firstCard, secondCard) {
@@ -116,7 +122,7 @@ function checkCards (firstCard, secondCard) {
         secondCard.classList.add('non-match');
     }
     
-    setTimeout(function () {
+    setTimeout(function () {//don't remove flip 
         firstCard.classList.remove('flip');
         secondCard.classList.remove('flip');
     }, 600);

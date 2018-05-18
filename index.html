@@ -28,7 +28,7 @@
                             <span id="move-count">0</span> Moves
                         </span>
                         <span>Time: <span id="timer">0:00</span></span>
-                        <span id="reset"><i id="new-game" class="fas fa-redo-alt"></i></span>
+                        <span id="reset"><i class="fas fa-redo-alt"></i></span>
                     </div>
                 </header>
                 
@@ -83,14 +83,11 @@
                     </li>
                 </ul>
             </div>
-            <div style="display: none;" id="win-panel">
-                <h1>Nice!</h1>
-                <div>0:00</div>
-                <ul>
-                    <li class="fa fa-star"></li>
-                    <li class="fa fa-star"></li>
-                    <li class="fa fa-star"></li>
-                </ul>
+            <div style="display: flex;" id="win-panel">
+                <h1 id=final-message>Nice!</h1>
+                <h1 id="final-moves"></h1>
+                <h1 id="final-time"></h1>
+                <ul id="final-star-rating"></ul>
                 <button id="play-again">Play again</button>
             </div>
         </main>
