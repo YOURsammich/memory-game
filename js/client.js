@@ -54,11 +54,7 @@ function updateCounter () {
     const moveCounter = gameObject.moveCounter++;
     document.getElementById('move-count').textContent = moveCounter;
     
-    if (moveCounter === 45) {
-        stars[0].className = 'fa';
-    } else if (moveCounter === 40) {
-        stars[0].className = 'fas fa-star-half';
-    } else if (moveCounter === 35) {
+    if (moveCounter === 35) {
         stars[1].className = 'fa';
     } else if (moveCounter === 30) {
         stars[1].className = 'fas fa-star-half';
