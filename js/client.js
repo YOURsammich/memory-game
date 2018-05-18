@@ -6,6 +6,7 @@ const gameObject ={
     time : 0
 };
 
+// @returns {Array} a new shuffled deck
 function generateDeck () {
     let deck = [];
     let possible = ['fas fa-feather', 'fas fa-dove', 'fas fa-fighter-jet', 'fas fa-rocket', 'fas fa-kiwi-bird', 'fas fa-paper-plane', 'fas fa-space-shuttle', 'fas fa-plane'];
@@ -21,6 +22,7 @@ function generateDeck () {
     return deck
 }
 
+// @returns {number} a childs element index
 function getNodeIndex (node) {
     const parent = node.parentElement;
     const children = parent.children;
@@ -32,6 +34,7 @@ function getNodeIndex (node) {
     return -1;
 }
 
+// @description start/reset game timer 
 function startTimer () {
     if (gameObject.timeInt) clearInterval(gameObject.timeInt);
     
@@ -49,6 +52,7 @@ function startTimer () {
     document.getElementById('timer').textContent = '0:00';
 }
 
+// @description Increment number of moves by 1 also update star rating
 function updateCounter () {
     const stars = document.getElementById('star-rating').children;
     const moveCounter = gameObject.moveCounter++;
@@ -65,6 +69,7 @@ function updateCounter () {
     }
 }
 
+// @description stop game and show win panel if you've won
 function checkWin () {
     const allCards = document.getElementsByClassName('card');
     let won = true;
@@ -84,6 +89,7 @@ function checkWin () {
     }
 }
 
+// @description start/restart game, resetting all game data
 function startGame () {
     const allCards = document.getElementsByClassName('card');
     const stars = document.getElementById('star-rating').children;
@@ -107,6 +113,11 @@ startGame();
 document.getElementById('reset').addEventListener('click', startGame);
 document.getElementById('play-again').addEventListener('click', startGame);
 
+/**
+* @description Check if two given cards match
+* @param {HTML element} firstCard
+* @param {HTML element} secondCard
+*/
 function checkCards (firstCard, secondCard) {
     const firstCardSymbol = gameObject.deck[getNodeIndex(firstCard)];
     const secondCardSymbol = gameObject.deck[getNodeIndex(secondCard)];
@@ -119,7 +130,7 @@ function checkCards (firstCard, secondCard) {
         secondCard.classList.add('non-match');
     }
     
-    setTimeout(function () {//don't remove flip 
+    setTimeout(function () {//don't remove flip until match/non-match animation is over
         firstCard.classList.remove('flip');
         secondCard.classList.remove('flip');
     }, 600);
