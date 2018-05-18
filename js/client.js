@@ -4,7 +4,7 @@ const gameObject ={
     moveCounter : 0,
     timeInt : null,
     time : 0
-}
+};
 
 function generateDeck () {
     let deck = [];
@@ -81,6 +81,7 @@ function checkWin () {
     if (won) {
         clearInterval(gameObject.timeInt);
         document.getElementById('win-panel').style.display = 'flex';
+        //move game data to win panel
         document.getElementById('final-time').textContent = document.getElementById('timer').textContent;
         document.getElementById('final-star-rating').innerHTML = document.getElementById('star-rating').innerHTML;
         document.getElementById('final-moves').textContent = document.getElementById('move-count').textContent + ' moves';
@@ -97,7 +98,7 @@ function startGame () {
     gameObject.flipOrder = [];
     gameObject.moveCounter = 0;
     updateCounter();
-    for (let card of allCards) {
+    for (let card of allCards) {//reset/set card classes
         card.getElementsByTagName('i')[0].className = gameObject.deck[getNodeIndex(card)];
         card.className = 'card';
     }
