@@ -1,3 +1,9 @@
+# Dependencies / Technologies used #
+* [Font Awesome](https://fontawesome.com/)
+* HTML
+* CSS
+* JavaScript
+
 # Getting started #
 Simply download/clone repo and open index.html in your browser
 
@@ -16,5 +22,3 @@ Simply download/clone repo and open index.html in your browser
 |   30  |   2    |
 |   35  |   1.5  |
 |   40  |   1    |
-|   45  |   0.5  |
-|   50  |   0    |
